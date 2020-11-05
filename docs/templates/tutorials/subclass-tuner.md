@@ -143,7 +143,10 @@ class MyTuner(kt.Tuner):
             self.on_epoch_begin(trial, model, epoch, logs={})
             for batch, data in enumerate(train_ds):
                 self.on_batch_begin(trial, model, batch, logs={})
-                batch_loss = float(run_train_step(data))
+                
+                temp_loss = run_train_step(data)
+                batch_loss = float(temp_loss.numpy().mean())
+                # batch_loss = float(run_train_step(data))
                 self.on_batch_end(trial, model, batch, logs={'loss': batch_loss})
 
                 if batch % 100 == 0:
